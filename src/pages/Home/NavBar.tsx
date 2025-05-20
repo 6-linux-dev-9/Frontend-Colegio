@@ -79,9 +79,6 @@ export default function NavBar() {
                         <Link to="/signin" className="block py-2 md:inline md:py-0 hover:bg-blue-500 px-4">
                             Login
                         </Link>
-                        <Link to="/signup" className="block py-2 md:inline md:py-0 hover:bg-blue-500 px-4">
-                            Signup
-                        </Link>
                     </div>
                 </div>
             </nav>

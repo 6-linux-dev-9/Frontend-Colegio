@@ -18,7 +18,7 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import PublicLayout from "./pages/Home/PublicLayout";
-import Welcome from "./pages/Home/Welcome";
+// import Welcome from "./pages/Home/Welcome";
 // import { BitacoraUsuario } from "./pages/AuthPages/BitacoraUsuario";
 // import { RolPermisoPage } from "./pages/AuthPages/RolPermisoPage";
 import { MarcaPage } from "./pages/AuthPages/MarcaPage";
@@ -39,6 +39,7 @@ import { BitacoraUsuario } from "./pages/Admin/bitacora/BitacoraUsuario";
 import { RolPermisoPage } from "./pages/Admin/rol-permisos/RolPermisoPage";
 import { PermisoAsignacionPage } from "./pages/Admin/rol-permisos/asignacion/PermisoAsignacionPage";
 import { UsuarioPage } from "./pages/Admin/usuarios/UsuariosPage";
+import HomePage from "./pages/Home/HomePage";
 // import { AuthProvider } from "./context/AuthContext.tsx";
 
 
@@ -50,7 +51,7 @@ export default function App() {
           <ScrollToTop />
           <Routes>
             <Route element={<PublicLayout />}>
-              <Route index path="/" element={<Welcome />} />
+              <Route index path="/" element={<HomePage />} />
             </Route>
             {/* Dashboard Layout */}
             {/* <AuthProvider> */}
