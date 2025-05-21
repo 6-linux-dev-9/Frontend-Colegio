@@ -5,7 +5,7 @@ import { MateriaPaginada } from "../interfaces/Personal-Escolar/Materia";
 import Storage from "../JWT/Storage";
 import { handleErrorResponse } from "../Utils/handles";
 
-export const getListMaterias = async (
+export const getListMateria = async (
   page: number = 1,
   per_page: number = 10
 ): Promise<MateriaPaginada> => {
@@ -58,14 +58,14 @@ export const deleteMateria = async (id: number): Promise<MateriaResponse> => {
 };
 
 // Actualizar materia
-export const updateMateria = async (id: number, nombre: string): Promise<MateriaResponse> => {
+export const updateMateria = async (id: number, nombre: string,estado:string): Promise<MateriaResponse> => {
   const response = await fetch(`${Server.API_URL}/materias/${id}/update`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${Storage.getStoredToken()}`
     },
-    body: JSON.stringify({ nombre })
+    body: JSON.stringify({ nombre ,estado})
   });
 
   const data = await handleErrorResponse(response);

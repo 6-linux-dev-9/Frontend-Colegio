@@ -73,6 +73,7 @@ const CursoTable = ({ reloadTrigger, onDeleted }: TableCursoProps) => {
       onDeleted?.();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      setShowDeleteModal(false);
       Swal.fire("Error", "No se pudo eliminar el curso", "error");
     }
   };

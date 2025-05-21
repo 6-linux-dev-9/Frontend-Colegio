@@ -41,6 +41,7 @@ export const CursosPage = () => {
         showConfirmButton: false,
       });
     } catch (error) {
+      setShowCreateModal(false);
       Swal.fire({
         icon: "error",
         title: "Error",

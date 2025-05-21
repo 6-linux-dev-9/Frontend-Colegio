@@ -43,6 +43,8 @@ import HomePage from "./pages/Home/HomePage";
 import UserProfiles from "./pages/Admin/usuarios/UserProfiles";
 import { CursosPage } from "./pages/Direccion/cursos/CursoPage";
 import { GestionPage } from "./pages/Direccion/gestion/GestionPage";
+import MateriaPage from "./pages/Direccion/materias/MateriaPage";
+import AsignacionCursoPage from "./pages/Direccion/asignaciones/cursos/AsigacionCursoPage";
 // import { AuthProvider } from "./context/AuthContext.tsx";
 
 
@@ -98,6 +100,8 @@ export default function App() {
                       <Route path="/usuarios" element={<UsuarioPage />} />
                       <Route path="/cursos" element={<CursosPage/>}/>
                       <Route path="/gestiones" element={<GestionPage/>}/>
+                      <Route path="/materias" element={<MateriaPage/>}/>
+                      <Route path="/asignacion-cursos" element={<AsignacionCursoPage/>}/>
                       
                       
                     </Route>

@@ -1,6 +1,6 @@
 import Server from "../API/server";
 
-import { CursoPaginado } from "../interfaces/Personal-Escolar/Curso";
+import { CursoAsignacion, CursoPaginado } from "../interfaces/Personal-Escolar/Curso";
 import Storage from "../JWT/Storage";
 import { CursoResponse } from "../Backend-Response/CursoResponse";
 import { handleErrorResponse } from "../Utils/handles";
@@ -18,6 +18,16 @@ export const getListCursos = async (page:number = 1, per_page:number = 10): Prom
     return await handleErrorResponse(response);
 } 
 
+export const getCompleteList = async (): Promise<CursoAsignacion[]> => {
+  const response = await fetch(`${Server.API_URL}/cursos/list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Storage.getStoredToken()}`,
+    },
+  });
+  return await handleErrorResponse(response);
+};
 
 export const createCurso = async (nombre: string,turno:string): Promise<CursoResponse> =>{
   const response = await fetch(`${Server.API_URL}/cursos/create`, {

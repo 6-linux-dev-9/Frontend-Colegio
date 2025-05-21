@@ -1,7 +1,8 @@
 import Server from "../API/server";
 import { GestionResponse } from "../Backend-Response/GestionResponse";
+import { CursoGestion } from "../interfaces/Personal-Escolar/Curso";
 
-import { GestionPaginado } from "../interfaces/Personal-Escolar/Gestion";
+import { GestionAsignacion, GestionPaginado } from "../interfaces/Personal-Escolar/Gestion";
 import Storage from "../JWT/Storage";
 import { handleErrorResponse } from "../Utils/handles";
 
@@ -21,6 +22,17 @@ export const getListGestion = async (
   );
   return await handleErrorResponse(response);
 };
+
+export const getCompleteList = async ():Promise<GestionAsignacion[]> => {
+  const response = await fetch(`${Server.API_URL}/gestiones/list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Storage.getStoredToken()}`,
+    }
+  });
+  return await handleErrorResponse(response);
+}
 
 
 // Crear gestión
@@ -73,3 +85,16 @@ export const updateGestion = async (id: number, nombre: string,estado:string): P
     gestion: data.gestion
   };
 };
+
+// export const getCursosByGestion = async (gestion_id:number):Promise<CursoGestionPaginado> => {
+export const getCursosByGestion = async (gestion_id:number):Promise<CursoGestion[]> => {
+  const response = await fetch(`${Server.API_URL}/gestiones/${gestion_id}/get-cursos`,{
+    method:"GET",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${Storage.getStoredToken()}`
+    }
+  });
+  return await handleErrorResponse(response);
+
+}

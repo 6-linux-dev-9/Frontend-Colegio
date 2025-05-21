@@ -19,7 +19,7 @@ export const ProtectedRoute = ({ children, rolesAllowed }: ProtectedRouteProps) 
   if (loading) return <div className="text-center p-8">Cargando...</div>;
 
   // No autenticado,si no esta autenticado entonces lo redirige a logearse
-  if (!user) return <Navigate to="/signin" replace/>;
+  if (!user) return <Navigate to="/" replace/>;
 
   // Verificar si tiene el rol necesario
   //si hay roles permitidos y si 

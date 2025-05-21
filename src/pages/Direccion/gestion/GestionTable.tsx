@@ -96,14 +96,14 @@ const GestionTable = ({ reloadTrigger, onDeleted }: GestionTableProps) => {
       onDeleted?.();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      setShowEditModal(false);
+      setShowDeleteModal(false);
       Swal.fire("Error", error.message || "No se pudo eliminar la gestion", "error");
     }
   };
 
   return (
     <>
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] mt-6">
         <div className="max-w-full overflow-x-auto">
           <Table>
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">

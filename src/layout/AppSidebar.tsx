@@ -65,8 +65,9 @@ const navItems: NavItem[] = [
          path: "/gestiones",
           pro: false },
       { name: "Cursos", path: "/cursos", pro: false },
-      { name: "Materias", path: "/roles-permisos", pro: false },
+      { name: "Materias", path: "/materias", pro: false },
       { name: "Docentes", path: "/usuarios", pro: false },
+      { name: "Asignacion de Cursos", path: "/asignacion-cursos", pro: false },
     ],
   },
   // {
