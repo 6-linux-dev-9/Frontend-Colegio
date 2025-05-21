@@ -41,6 +41,8 @@ import { PermisoAsignacionPage } from "./pages/Admin/rol-permisos/asignacion/Per
 import { UsuarioPage } from "./pages/Admin/usuarios/UsuariosPage";
 import HomePage from "./pages/Home/HomePage";
 import UserProfiles from "./pages/Admin/usuarios/UserProfiles";
+import { CursosPage } from "./pages/Direccion/cursos/CursoPage";
+import { GestionPage } from "./pages/Direccion/gestion/GestionPage";
 // import { AuthProvider } from "./context/AuthContext.tsx";
 
 
@@ -94,6 +96,8 @@ export default function App() {
                       <Route path="/categorias" element={<CategoriaPage />} />
                       <Route path="/modelos" element={<ModeloPage />} />
                       <Route path="/usuarios" element={<UsuarioPage />} />
+                      <Route path="/cursos" element={<CursosPage/>}/>
+                      <Route path="/gestiones" element={<GestionPage/>}/>
                       
                       
                     </Route>

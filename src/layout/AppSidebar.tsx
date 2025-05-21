@@ -62,9 +62,9 @@ const navItems: NavItem[] = [
     subItems: [
       { 
         name: "Gestiones",
-         path: "/profile",
+         path: "/gestiones",
           pro: false },
-      { name: "Cursos", path: "/bitacora-usuario", pro: false },
+      { name: "Cursos", path: "/cursos", pro: false },
       { name: "Materias", path: "/roles-permisos", pro: false },
       { name: "Docentes", path: "/usuarios", pro: false },
     ],

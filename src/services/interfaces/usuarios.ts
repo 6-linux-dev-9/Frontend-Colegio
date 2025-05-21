@@ -52,6 +52,7 @@ export interface ResponseDefault{
   modelo?:Modelo,
   usuario?:Usuario,
   producto?:ProductoResponseUpdateBackend
+  
 }
 
 export interface UsuarioPaginado{

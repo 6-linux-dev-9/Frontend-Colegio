@@ -158,7 +158,9 @@ const TableMarca = ({ reloadTrigger, onDeleted }: TableMarcaProps) => {
       </Modal>
 
       {/* Modal de eliminación */}
-      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} className="max-w-[400px] m-4">
+      <Modal isOpen={showDeleteModal} 
+      onClose={() => setShowDeleteModal(false)} 
+      className="max-w-[400px] m-4">
         <div className="w-full p-6 bg-white rounded-3xl dark:bg-gray-900">
           <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">Confirmar eliminación</h2>
           <p className="text-sm text-gray-600 dark:text-gray-300">
