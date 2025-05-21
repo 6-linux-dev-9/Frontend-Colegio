@@ -55,6 +55,20 @@ const navItems: NavItem[] = [
       { name: "Usuarios", path: "/usuarios", pro: false },
     ],
   },
+  {
+      //icono
+    icon: <UserCircleIcon />,
+    name: "Personal Academico",
+    subItems: [
+      { 
+        name: "Gestiones",
+         path: "/profile",
+          pro: false },
+      { name: "Cursos", path: "/bitacora-usuario", pro: false },
+      { name: "Materias", path: "/roles-permisos", pro: false },
+      { name: "Docentes", path: "/usuarios", pro: false },
+    ],
+  },
   // {
   //   icon: <UserCircleIcon />,
   //   name: "Perfil de usuario",

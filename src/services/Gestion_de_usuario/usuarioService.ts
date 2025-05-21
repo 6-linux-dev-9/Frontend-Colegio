@@ -9,7 +9,8 @@ export const updateUserProfile = async (data: {
   nombre: string;
   username: string;
   email: string;
-  rol_id: number;
+  // rol_id: number;
+  ci:string;
 }): Promise<AuthResponse> => {
     console.log(`data: ${JSON.stringify(data)}`)
   try {

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router";
 
 import NotFound from "./pages/OtherPage/NotFound";
-import UserProfiles from "./pages/UserProfiles";
+
 import Videos from "./pages/UiElements/Videos";
 import Images from "./pages/UiElements/Images";
 import Alerts from "./pages/UiElements/Alerts";
@@ -40,6 +40,7 @@ import { RolPermisoPage } from "./pages/Admin/rol-permisos/RolPermisoPage";
 import { PermisoAsignacionPage } from "./pages/Admin/rol-permisos/asignacion/PermisoAsignacionPage";
 import { UsuarioPage } from "./pages/Admin/usuarios/UsuariosPage";
 import HomePage from "./pages/Home/HomePage";
+import UserProfiles from "./pages/Admin/usuarios/UserProfiles";
 // import { AuthProvider } from "./context/AuthContext.tsx";
 
 

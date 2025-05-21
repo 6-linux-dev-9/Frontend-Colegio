@@ -1,49 +1,45 @@
-import { useEffect, useState } from "react";
-// import { Rol } from "../../services/interfaces/usuarios";
-// import { getListRoles } from "../../services/Gestion_de_usuario/rolService";
-import { Rol, Usuario } from "../../../../services/interfaces/usuarios";
+import { useContext, useEffect, useState } from "react";
+
+import { useModal } from "../../../../hooks/useModal";
 import { Modal } from "../../../../components/ui/modal";
 import Button from "../../../../components/ui/button/Button";
 import Input from "../../../../components/form/input/InputField";
+import { updateUserProfile } from "../../../../services/Gestion_de_usuario/usuarioService";
+// import SelectModified from "../../../../pages/AuthPages/SelectModified";
+// import { Rol } from "../../../../services/interfaces/usuarios";
+// import { getListRoles } from "../../../../services/Gestion_de_usuario/rolService";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../../pages/Context/AuthContext";
 import Label from "../../../../components/form/Label";
 
-import { useModal } from "../../../../hooks/useModal";
-import { getListRoles } from "../../../../services/Gestion_de_usuario/rolService";
-import { adminEditUserMethod} from "../../../../services/Gestion_de_usuario/usuarioService";
-import Swal from "sweetalert2";
-import SelectModified from "../../../shared/SelectModified";
 
-interface Props {
-  user: Usuario | null;
-  setUser: (user: Usuario) => void;
-}
-export default function UserAdminInfoCard({user,setUser}:Props) {
+
+export default function UserInfoCard() {
   const { isOpen, openModal, closeModal } = useModal();
-  
-  
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("AuthContext not found");
+  const { user, setUser } = context;
 
   const [form, setForm] = useState({
     nombre: "",
     username: "",
     email: "",
-    rol_id: 0, // en vez de ""
-    password:"",
+    ci:""
   });
 
-  const [roles, setRoles] = useState<Rol[]>([]);
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const data = await getListRoles();
-    
-        setRoles(data);
-      } catch (error) {
-        console.error("Error al obtener roles", error);
-      }
-    };
+  // const [roles, setRoles] = useState<Rol[]>([]);
+  // useEffect(() => {
+  //   const fetchRoles = async () => {
+  //     try {
+  //       const data = await getListRoles();
+  //       setRoles(data);
+  //     } catch (error) {
+  //       console.error("Error al obtener roles", error);
+  //     }
+  //   };
 
-    fetchRoles();
-  }, []);
+  //   fetchRoles();
+  // }, []);
 
   useEffect(() => {
     if (user) {
@@ -51,8 +47,7 @@ export default function UserAdminInfoCard({user,setUser}:Props) {
         nombre: user.nombre || "",
         username: user.username || "",
         email: user.email || "",
-        rol_id: user.rol_id || 0,
-        password: "",
+        ci: user.ci || ""
       });
     }
   }, [user, isOpen]);
@@ -61,53 +56,36 @@ export default function UserAdminInfoCard({user,setUser}:Props) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleRoleChange = (value: string) => {
-    setForm({ ...form, rol_id: parseInt(value) });
-  };
-
-  const ejecutarSwalBien = (title:string,text:string):void => {
-         Swal.fire({title,
-                         text, 
-                         icon:"success",
-                         timer:2000,
-                         showConfirmButton: false,
-                        });
-                        
-     }
-     const ejecutarSwalMal = (title:string,text:string,timer?:number):void => {
-        Swal.fire({title,
-                         text, 
-                         icon:"error",
-                         timer,
-                         showConfirmButton: false,
-                        });
-      }
+  // const handleRoleChange = (value: string) => {
+  //   setForm({ ...form, rol_id: parseInt(value) });
+  // };
   // para salvar los datos del usuario
   const handleSave = async (e?: React.FormEvent) => {
-
     if (e) e.preventDefault(); // <--- evita que recargue la página
-    const payload = { ...form };
-    if(payload.password.length >= 1 && payload.password.length < 4 ){
-      console.error("La contrasenia no puede menor a 4 caracteres")
+    try {
+      const updatedUser = await updateUserProfile(form);
+      setUser(updatedUser.user);
       closeModal();
-      ejecutarSwalMal("Error","Error en la validacion de datos",3000)
-      return
+
+            Swal.fire({
+              icon: 'success',
+              title: 'exito',
+              text: updatedUser.message,
+              timer: 2000,
+              showConfirmButton: false,
+            });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Error updating user:", error);
+      closeModal();
+      Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: error.message,
+              // timer: 2000,
+              showConfirmButton: true,
+            });
     }
-    else{
-        try {
-          if (!user) throw new Error("Usuario no encontrado");
-          const updatedUser = await adminEditUserMethod(user.id,form);
-          setUser(updatedUser.user);
-          closeModal();
-          ejecutarSwalBien("Exito",updatedUser.message??"Datos actualizados con exito")
-          return
-        } catch (error) {
-          console.error("Error updating user:", error);
-          closeModal();
-          ejecutarSwalMal("Error","Error en la validacion de datos",3000)
-        }
-    }
-    
   };
 
   return (
@@ -156,10 +134,18 @@ export default function UserAdminInfoCard({user,setUser}:Props) {
             </div>
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                CI
+                Cedula de Identidad
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
                 {user?.ci ?? "-"}
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                Estado
+              </p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.estado ?? "-"}
               </p>
             </div>
           </div>
@@ -208,7 +194,7 @@ export default function UserAdminInfoCard({user,setUser}:Props) {
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Nombre</Label>
-                    <Input type="text" name="nombre" value={form.nombre} onChange={handleChange} />
+                    <Input type="text" name="nombre" value={form.nombre} onChange={handleChange} disabled={user?.rol?.nombre === "ALUMNO"} />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
@@ -220,18 +206,8 @@ export default function UserAdminInfoCard({user,setUser}:Props) {
                     <Label>Email</Label>
                     <Input type="text" name="email" value={form.email} onChange={handleChange} />
                   </div>
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Nueva Contraseña</Label>
-                    <Input
-                      type="password"
-                      name="password"
-                      value={form.password}
-                      onChange={handleChange}
-                      placeholder="Deja vacío para no cambiarla"
-                    />
-                  </div>
 
-                  <div className="col-span-2 lg:col-span-1">
+                  {/* <div className="col-span-2 lg:col-span-1">
                     <Label>Rol</Label>
                     <SelectModified
                       options={roles.map((rol) => ({
@@ -243,8 +219,11 @@ export default function UserAdminInfoCard({user,setUser}:Props) {
                       onChange={handleRoleChange}
                       className="dark:bg-dark-900"
                     />
-                    
-                    
+                  </div> */}
+
+                   <div className="col-span-2 lg:col-span-1">
+                    <Label>CI</Label>
+                    <Input type="text" name="ci" value={form.ci} onChange={handleChange} />
                   </div>
                 </div>
               </div>
