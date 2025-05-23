@@ -7,6 +7,10 @@ export interface Materia{
     nombre:string,
     estado:string
 }
+export interface MateriaAsignacion{
+    id:number,
+    nombre:string
+}
 export interface MateriaPaginada{
     items:Materia[],
     meta:Meta

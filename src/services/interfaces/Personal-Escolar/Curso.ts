@@ -1,4 +1,6 @@
 import { Meta } from "../Bitacora";
+import { GestionAsignacion } from "./Gestion";
+import { MateriaAsignacion } from "./Materia";
 
 export interface Curso{
     id : number,
@@ -22,14 +24,31 @@ export interface CursoAsignacion{
 export interface CursoGestion{
     id:number,
     estado:string,
-    total_aprobados:number,
-    total_reprobados:number,
+    // total_aprobados:number,
+    // total_reprobados:number,
     curso:CursoAsignacion
-    total_abandono: number,
-    url_image:string
+    // total_abandono: number,
+    // url_image:string
 }
 
 export interface CursoGestionPaginado{
     items:CursoGestion[],
     meta:Meta
+}
+
+export interface CursoGestionEdit {
+  id: number;
+  estado: string;
+  total_aprobados:number,
+  total_reprobados:number,
+  curso: CursoAsignacion,
+  gestion:GestionAsignacion,
+  total_abandono: number,
+  url_image:string
+}
+
+export interface SimpleCursoGestionMateria {
+  id: number;
+  estado: string;
+  materia:MateriaAsignacion
 }

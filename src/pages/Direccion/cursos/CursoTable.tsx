@@ -61,7 +61,7 @@ const CursoTable = ({ reloadTrigger, onDeleted }: TableCursoProps) => {
     try {
       const data = await deleteCurso(cursoSeleccionado.id);
       Swal.fire({
-        title: "Deshabilitado",
+        title: "Eliminado",
         text: data.message,
         icon: "success",
         timer: 2000,

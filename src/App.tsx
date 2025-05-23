@@ -45,6 +45,8 @@ import { CursosPage } from "./pages/Direccion/cursos/CursoPage";
 import { GestionPage } from "./pages/Direccion/gestion/GestionPage";
 import MateriaPage from "./pages/Direccion/materias/MateriaPage";
 import AsignacionCursoPage from "./pages/Direccion/asignaciones/cursos/AsigacionCursoPage";
+import CursoGestionEditPage from "./pages/Direccion/asignaciones/cursos/CursoGestionEditPage";
+import AsignacionMateriasPage from "./pages/Direccion/asignaciones/materias/AsignacionMateriasPage";
 // import { AuthProvider } from "./context/AuthContext.tsx";
 
 
@@ -102,6 +104,8 @@ export default function App() {
                       <Route path="/gestiones" element={<GestionPage/>}/>
                       <Route path="/materias" element={<MateriaPage/>}/>
                       <Route path="/asignacion-cursos" element={<AsignacionCursoPage/>}/>
+                      <Route path="/curso-gestion/:id" element={<CursoGestionEditPage/>}/>
+                      <Route path="/asignacion-materias" element={<AsignacionMateriasPage/>}/>
                       
                       
                     </Route>

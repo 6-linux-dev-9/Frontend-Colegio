@@ -1,6 +1,6 @@
 // components/common/ComponentCard.tsx
 interface ComponentCardProps {
-  title: string;
+  title?: string;
   children: React.ReactNode;
   className?: string;
   desc?: string;

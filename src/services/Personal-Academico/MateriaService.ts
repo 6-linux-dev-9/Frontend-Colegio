@@ -1,7 +1,8 @@
 import Server from "../API/server";
 import { MateriaResponse } from "../Backend-Response/MateriaResponse";
+import { SimpleCursoGestionMateria } from "../interfaces/Personal-Escolar/Curso";
 
-import { MateriaPaginada } from "../interfaces/Personal-Escolar/Materia";
+import { MateriaAsignacion, MateriaPaginada } from "../interfaces/Personal-Escolar/Materia";
 import Storage from "../JWT/Storage";
 import { handleErrorResponse } from "../Utils/handles";
 
@@ -74,3 +75,27 @@ export const updateMateria = async (id: number, nombre: string,estado:string): P
     materia: data.materia
   };
 };
+
+//para obtener la lista entera de las materia, esto sirve para el filtrador
+export const listMaterias = async ():Promise<MateriaAsignacion[]> => {
+  const response =await fetch(`${Server.API_URL}/materias/list`,{
+    method:"GET",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization: `Bearer ${Storage.getStoredToken()}`
+    },
+  })
+  return await handleErrorResponse(response);
+}
+
+export const listMateriasToTable = async(gestion_id:number,curso_id:number): Promise<SimpleCursoGestionMateria[]> => {
+  const response = await fetch(`${Server.API_URL}/gestiones/${gestion_id}/curso/${curso_id}/get-materias`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Storage.getStoredToken()}`,
+    },
+  });
+  return await handleErrorResponse(response);
+}
+// export const listMateriasForTable = async(): Promise

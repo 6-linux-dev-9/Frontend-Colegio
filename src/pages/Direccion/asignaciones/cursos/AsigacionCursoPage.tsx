@@ -6,8 +6,8 @@ import PageBreadcrumb from "../../../../components/common/PageBreadCrumb";
 import ComponentCardModified from "../../../shared/ComponentCardModified";
 import SelectModified from "../../../shared/SelectModified";
 import Button from "../../../../components/ui/button/Button";
-import { TrashIcon } from "@heroicons/react/24/solid";
-import Switch from "../../../../components/form/switch/Switch";
+
+// import Switch from "../../../../components/form/switch/Switch";
 import { getCursosByGestion, getCompleteList as getGestiones } from "../../../../services/Personal-Academico/GestionService";
 import Label from "../../../../components/form/Label";
 import { GestionAsignacion } from "../../../../services/interfaces/Personal-Escolar/Gestion";
@@ -15,39 +15,45 @@ import { GestionAsignacion } from "../../../../services/interfaces/Personal-Esco
 import AutoCompleteCombobox from "../../../shared/AutoCompleteCombobox";
 import { CursoGestion } from "../../../../services/interfaces/Personal-Escolar/Curso";
 import CursoGestionTable from "./CursoPorGestionTable";
+import { Modal } from "../../../../components/ui/modal";
+import Swal from "sweetalert2";
 
 export default function AsignacionCursoPage() {
   const [gestiones, setGestiones] = useState<GestionAsignacion[]>([]);
   const [cursosPorGestion, setCursosPorGestion] = useState<CursoGestion[]>([]);
-
   const [gestionSeleccionada, setGestionSeleccionada] = useState<number | null>(null);
-  const [soloHabilitados, setSoloHabilitados] = useState<boolean>(true);
-
   const [cursoSeleccionado, setCursoSeleccionado] = useState<CursoGestion | null>(null);
-  const [cursosAgregados, setCursosAgregados] = useState<CursoGestion[]>([]);
-
-
   const [refresh, setRefresh] = useState(false);
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
   const triggerRefresh = () => setRefresh(prev => !prev);
 
+  // const [soloHabilitados, setSoloHabilitados] = useState<boolean>(true);
+
+
+
+  //para obtener todas las gestiones y cargar los cursos por la gestion seleccionada
+  const fetchData = async () => {
+    const gestionesData = await getGestiones();
+    setGestiones(gestionesData);
+    if (gestionesData.length > 0) {
+      //podria ajustarse para que apunte a la gestion del contexto o de la tabla de la bd
+      const ultimaGestionId = gestionesData[gestionesData.length - 1].id;
+      setGestionSeleccionada(ultimaGestionId);
+      fetchCursosPorGestion(ultimaGestionId);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const gestionesData = await getGestiones();
-      setGestiones(gestionesData);
-      if (gestionesData.length > 0) {
-        //podria ajustarse para que apunte a la gestion del contexto o de la tabla de la bd
-        const ultimaGestionId = gestionesData[gestionesData.length - 1].id;
-        setGestionSeleccionada(ultimaGestionId);
-        fetchCursosPorGestion(ultimaGestionId);
-      }
-    };
     fetchData();
   }, []);
 
   const fetchCursosPorGestion = async (gestionId: number) => {
     try {
       const data = await getCursosByGestion(gestionId);
-      setCursosPorGestion(data);
+      setCursosPorGestion(data)
+      // setCursosPorGestion(data);
     } catch (error) {
       console.error("Error al obtener cursos por gestión:", error);
     }
@@ -59,20 +65,50 @@ export default function AsignacionCursoPage() {
     }
   }, [gestionSeleccionada,refresh]);
 
-  const cursosFiltrados = soloHabilitados
-    ? cursosPorGestion.filter((c) => c.estado === "Habilitado")
-    : cursosPorGestion;
+  // const cursosFiltrados = soloHabilitados
+  //   ? cursosPorGestion.filter((c) => c.estado === "Habilitado")
+  //   : cursosPorGestion;
 
   const handleAgregarCurso = () => {
-    if (cursoSeleccionado && !cursosAgregados.find(c => c.id === cursoSeleccionado.id)) {
-      setCursosAgregados((prev) => [...prev, cursoSeleccionado]);
-      setCursoSeleccionado(null);
+    if (cursoSeleccionado){
+      setShowConfirmModal(true)
     }
   };
 
-  const handleEliminarCurso = (id: number) => {
-    setCursosAgregados((prev) => prev.filter((c) => c.id !== id));
+
+
+  const confirmarAsignacion = async () => {
+    try {
+      // Aquí deberías hacer el POST real al backend
+      // await asignarCursoAGestion({ cursoId: cursoSeleccionado.id, gestionId: gestionSeleccionada })
+
+      setShowConfirmModal(false);
+      setCursoSeleccionado(null);
+      triggerRefresh();
+
+      Swal.fire({
+        icon: "success",
+        title: "Curso asignado",
+        text: "El curso fue asignado correctamente a la gestión.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setShowConfirmModal(false);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo asignar el curso.",
+        showConfirmButton: true,
+      });
+    }
   };
+
+
+  // const handleEliminarCurso = (id: number) => {
+  //   setCursosAgregados((prev) => prev.filter((c) => c.id !== id));
+  // };
 
   return (
     <>
@@ -97,7 +133,7 @@ export default function AsignacionCursoPage() {
           <div className="md:col-span-2">
             
             <AutoCompleteCombobox<CursoGestion>
-              options={cursosFiltrados}
+              options={cursosPorGestion}
               onSelect={setCursoSeleccionado}
               displayValue={(item) => item.curso.nombre}
               getKey={(item) => item.id}
@@ -106,47 +142,55 @@ export default function AsignacionCursoPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Switch
               label="Mostrar solo habilitados"
               defaultChecked={true}
               onChange={setSoloHabilitados}
             />
-          </div>
-        </div>
+          </div> */}
 
-        <div className="mt-6">
-          <ul className="space-y-3">
-            {cursosAgregados.map((curso) => (
-              <li
-                key={curso.id}
-                className="flex items-center justify-between rounded-md border px-4 py-2 dark:border-white/10"
-              >
-                <span>{curso.curso.nombre}</span>
-                <button
-                  onClick={() => handleEliminarCurso(curso.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <TrashIcon className="w-5 h-5" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {cursoSeleccionado && (
-          <div className="flex justify-end pt-6">
-            <Button size="sm" onClick={handleAgregarCurso}>
+            {cursoSeleccionado && (
+          <div className="flex items-center pt-[25px]">
+            <Button size="sm" onClick={handleAgregarCurso} disabled={!cursoSeleccionado}>
               + Agregar
             </Button>
           </div>
         )}
+        </div>
+
+       
+
+      
         <CursoGestionTable
-          data={cursosFiltrados}
+          data={cursosPorGestion}
           onDeleted={triggerRefresh}
-          onUpdated={triggerRefresh}
+          // onUpdated={triggerRefresh}
         />
       </ComponentCardModified>
+      <Modal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          className="max-w-[500px] m-4"
+        >
+          <div className="w-full p-6 bg-white rounded-3xl dark:bg-gray-900">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-white">
+              Confirmar Asignación
+            </h2>
+            <p className="text-gray-700 dark:text-gray-200">
+              ¿Estás seguro de asignar el curso <strong>{cursoSeleccionado?.curso.nombre}</strong> a la gestión <strong>{gestiones.find(g => g.id === gestionSeleccionada)?.nombre}</strong>?
+            </p>
+            <div className="flex justify-end gap-3 pt-6">
+              <Button variant="outline" onClick={() => setShowConfirmModal(false)}>
+                Cancelar
+              </Button>
+              <Button onClick={confirmarAsignacion}>
+                Confirmar
+              </Button>
+            </div>
+          </div>
+        </Modal>
+
     </>
   );
 }
